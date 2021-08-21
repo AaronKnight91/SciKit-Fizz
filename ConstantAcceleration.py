@@ -22,18 +22,6 @@ class ConstantAcceleration():
         except:
             self._t = time
 
-    def calculate_velocity(self):
-
-        if self._u is not None and self._a is not None and self._t is not None:
-            self._v = self._u + (self._a * self._t)
-        elif self._u is not None and self._a is not None and self._s is not None:
-            self._v = np.sqrt(self._u**2 + (2 * self._a * self._s))
-        else:
-            raise Exception("Unable to calculate the velocity based on input values")
-
-        self.final_velocity = self._v[-1]
-        return self.final_velocity
-
     def calculate_displacement(self):
 
         if self._u is not None and self._v is not None and self._t is not None:
@@ -47,6 +35,25 @@ class ConstantAcceleration():
 
         self.displacement  = self._s[-1]
         return self.displacement
+
+    def calculate_velocity(self):
+
+        if self._u is not None and self._a is not None and self._t is not None:
+            self._v = self._u + (self._a * self._t)
+        elif self._u is not None and self._a is not None and self._s is not None:
+            self._v = np.sqrt(self._u**2 + (2 * self._a * self._s))
+        else:
+            raise Exception("Unable to calculate the velocity based on input values")
+
+        self.final_velocity = self._v[-1]
+        return self.final_velocity
+
+    def calculate_acceleration(self):
+
+        if self._u is not None and self._v is not None and self._t is not None:
+            self._a = (self._v - self._u) / self._t
+            self.acceleration = self._a[-1]
+            return self.acceleration
     
     def print_velocity(self):
         print(self.final_velocity, " m/s")
