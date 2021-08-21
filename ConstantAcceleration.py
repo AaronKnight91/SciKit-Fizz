@@ -6,9 +6,12 @@ class ConstantAcceleration():
 
         #if time < 0 and not type(time) == None:
         #    raise ValueError("Time must be greater than or equal to 0 seconds")
-        self._s = np.linspace(0, displacement, num_intervals)
+        try:
+            self._s = np.linspace(0, displacement, num_intervals)
+        except:
+            self._s = displacement
         self._u = initial_velocity
-        self._v = [final_velocity]
+        self._v = np.linspace(0, final_velocity, num_intervals)
         self._a = acceleration
         try:
             self._t = np.linspace(0, time, num_intervals)
@@ -27,23 +30,34 @@ class ConstantAcceleration():
 
         try:
             self._v = self._u + (self._a * self._t)
-            self.final_velocity = self._v[-1]
-            return self.final_velocity
+        except Exception:
+            raise Exception("Unable to calculate the velocity based on input values")
         except:
             self._v = np.sqrt(self._u**2 + (2 * self._a * self._s))
-            self.final_velocity = self._v[-1]
-            return self.final_velocity
-        finally:
-            raise Exception("Unable to calculate the velocity based on input values")
+        self.final_velocity = self._v[-1]
+        return self.final_velocity
 
     def calculate_displacement(self):
 
-        self._s = ((self._u + self._v) * self._t) / 2
+        try:
+            self._s = ((self._u + self._v) * self._t) / 2
+        except Exception:
+            raise Exception("Unable to calculate the displacement based on input values")
+        except:
+            self._s = (self._v * self._t) / (0.5 * self._a * np.power(self._t, 2))
+        self.displacement  = self._s[-1]
+        return self.displacement
 
+    def print_velocity(self):
+        print(self.final_velocity, " m/s")
+
+    def print_displacement(self):
+        print(self.displacement, " m")
 
 if  __name__ == "__main__":
 
-    c = ConstantAcceleration(initial_velocity = 10, acceleration = 5, displacement = 12.3)
-    vel = c.calculate_velocity()
-    print(vel)
-    
+    c = ConstantAcceleration(initial_velocity = 10, final_velocity = 50, time=50)
+    #vel = c.calculate_velocity()
+    #print(vel)
+    disp = c.calculate_displacement()
+    c.print_displacement()
