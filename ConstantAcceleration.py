@@ -22,13 +22,6 @@ class ConstantAcceleration():
         except:
             self._t = time
 
-
-    # v = u + at DONE
-    # x = (u + v)t/2 DONE
-    # x = ut + 0.5at**2
-    # v**2 = u**2 + 2ax DONE
-    # x = vt - 0.5at**2 DONE
-
     def calculate_velocity(self):
 
         if self._u is not None and self._a is not None and self._t is not None:
