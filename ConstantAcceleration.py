@@ -4,8 +4,8 @@ class ConstantAcceleration():
 
     def __init__(self, displacement=None, initial_velocity=None, final_velocity=None, acceleration=None, time=None, num_intervals=10):
 
-        #if time < 0 and not type(time) == None:
-        #    raise ValueError("Time must be greater than or equal to 0 seconds")
+        if time < 0 and time is not None:
+            raise ValueError("Time must be greater than or equal to 0 seconds")
         try:
             self._s = np.linspace(0, displacement, num_intervals)
         except:
@@ -57,7 +57,7 @@ class ConstantAcceleration():
 if  __name__ == "__main__":
 
     #c = ConstantAcceleration(initial_velocity = 10, acceleration = 10, time=20) 
-    c = ConstantAcceleration(initial_velocity = 10, final_velocity = 50, time=50)
+    c = ConstantAcceleration(initial_velocity = 10, final_velocity = 50, time=-50)
     #vel = c.calculate_velocity()
     #print(vel)
     disp = c.calculate_displacement()
