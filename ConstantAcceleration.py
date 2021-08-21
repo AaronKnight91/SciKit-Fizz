@@ -2,15 +2,18 @@ import numpy as np
 
 class ConstantAcceleration():
 
-    def __init__(self, displacement=0, initial_velocity=0, final_velocity=0, acceleration=0, time=0, num_intervals=10):
+    def __init__(self, displacement=None, initial_velocity=None, final_velocity=None, acceleration=None, time=None, num_intervals=10):
 
-        if time < 0:
-            raise ValueError("Time must be greater than or equal to 0 seconds")
+        #if time < 0 and not type(time) == None:
+        #    raise ValueError("Time must be greater than or equal to 0 seconds")
         self._s = np.linspace(0, displacement, num_intervals)
         self._u = initial_velocity
         self._v = [final_velocity]
         self._a = acceleration
-        self._t = np.linspace(0, time, num_intervals)
+        try:
+            self._t = np.linspace(0, time, num_intervals)
+        except:
+            self._t = time
 
         self.final_velocity = self._v[-1]
 
@@ -22,9 +25,16 @@ class ConstantAcceleration():
 
     def calculate_velocity(self):
 
-        self._v = self._u + (self._a * self._t)
-        self.final_velocity = self._v[-1]
-        return self.final_velocity
+        try:
+            self._v = self._u + (self._a * self._t)
+            self.final_velocity = self._v[-1]
+            return self.final_velocity
+        except:
+            self._v = np.sqrt(self._u**2 + (2 * self._a * self._s))
+            self.final_velocity = self._v[-1]
+            return self.final_velocity
+        finally:
+            raise Exception("Unable to calculate the velocity based on input values")
 
     def calculate_displacement(self):
 
@@ -33,7 +43,7 @@ class ConstantAcceleration():
 
 if  __name__ == "__main__":
 
-    c = ConstantAcceleration(initial_velocity = 10, acceleration = 5, time = 12.3)
+    c = ConstantAcceleration(initial_velocity = 10, acceleration = 5, displacement = 12.3)
     vel = c.calculate_velocity()
     print(vel)
     
