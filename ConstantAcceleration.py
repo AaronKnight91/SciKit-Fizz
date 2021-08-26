@@ -1,4 +1,5 @@
 import numpy as np
+import math as m
 
 class ConstantAcceleration():
 
@@ -54,6 +55,18 @@ class ConstantAcceleration():
             self._a = (self._v - self._u) / self._t
             self.acceleration = self._a[-1]
             return self.acceleration
+
+    def calculate_time(self):
+
+        pass
+
+    def maximum_height(self):
+
+        # Max height when final velocity = 0 m/s
+        # s = -u**2/2a
+
+        self._max_height = -np.power(self._u, 2) / (2*self._a)
+        print(self._max_height)
     
     def print_velocity(self):
         print(self.final_velocity, " m/s")
@@ -61,11 +74,33 @@ class ConstantAcceleration():
     def print_displacement(self):
         print(self.displacement, " m")
 
+class ProjectileMotion(ConstantAcceleration):
+
+    def __init__(self, displacement=None, initial_velocity=None, final_velocity=None, acceleration=None, time=None, angle = 0, num_intervals=10):
+
+        ConstantAcceleration.__init__(self, displacement, initial_velocity, final_velocity, acceleration, time, num_intervals)
+        self._angle = angle
+        self.resolve_velocity()
+
+    def resolve_velocity(self):
+
+        self._vertical = self._u * m.sin(self._angle)
+        self._horizontal = self._u * m.cos(self._angle)
+
 if  __name__ == "__main__":
 
+    import matplotlib.pyplot as plt
+
     #c = ConstantAcceleration(initial_velocity = 10, acceleration = 10, time=20) 
-    c = ConstantAcceleration(initial_velocity = 10, final_velocity = 50, time=-50)
+    #c = ConstantAcceleration(initial_velocity = 10, acceleration=2.5, final_velocity = 50, time=50)
     #vel = c.calculate_velocity()
     #print(vel)
-    disp = c.calculate_displacement()
-    c.print_displacement()
+    #disp = c.calculate_displacement()
+    #c.print_displacement()
+    #print(c._s)
+    #c.maximum_height()
+    #plt.plot(c._t, c._s)
+    #plt.show()
+
+    projectile = ProjectileMotion(initial_velocity = 10, acceleration = 10, angle = 15, time=20)
+    print(projectile._vertical, projectile._horizontal)
