@@ -60,14 +60,6 @@ class ConstantAcceleration():
 
         pass
 
-    def maximum_height(self):
-
-        # Max height when final velocity = 0 m/s
-        # s = -u**2/2a
-
-        self._max_height = -np.power(self._u, 2) / (2*self._a)
-        print(self._max_height)
-    
     def print_velocity(self):
         print(self.final_velocity, " m/s")
 
@@ -76,16 +68,29 @@ class ConstantAcceleration():
 
 class ProjectileMotion(ConstantAcceleration):
 
-    def __init__(self, displacement=None, initial_velocity=None, final_velocity=None, acceleration=None, time=None, angle = 0, num_intervals=10):
+    def __init__(self, displacement=None, initial_velocity=None, final_velocity=None, acceleration=None, time=None, angle = 0, num_intervals=10, gravity = 9.81):
 
         ConstantAcceleration.__init__(self, displacement, initial_velocity, final_velocity, acceleration, time, num_intervals)
         self._angle = angle
+        self._g = gravity
         self.resolve_velocity()
 
     def resolve_velocity(self):
 
         self._vertical = self._u * m.sin(self._angle)
         self._horizontal = self._u * m.cos(self._angle)
+
+    def maximum_height(self):
+
+        self._max_height = np.power(self._vertical, 2) / (2*self._a)
+
+    def maximum_range(self):
+
+        pass
+
+    def time_of_flight(self):
+
+        self._time_of_flight = 2 * self._u * m.sin(self._angle) / self._g
 
 if  __name__ == "__main__":
 
@@ -104,3 +109,4 @@ if  __name__ == "__main__":
 
     projectile = ProjectileMotion(initial_velocity = 10, acceleration = 10, angle = 15, time=20)
     print(projectile._vertical, projectile._horizontal)
+    projectile.maximum_height()
